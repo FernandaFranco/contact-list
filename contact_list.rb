@@ -25,8 +25,7 @@ get "/contacts" do
   @contact_names = @contacts.keys.sort
   @remaining = %w(A B C D E F G H I J K L M N O P Q R S T U V W X Y Z)
 
-  # erb :contacts
-  @contacts.to_s
+  erb :contacts
 end
 
 get "/contacts/:contact_id" do
@@ -43,7 +42,7 @@ get "/new_contact" do
 end
 
 post "/new_contact" do
-  session[:contacts][params[:name]] = {phone_number: params[:phone].to_i, email: params[:email]}
+  session[:contacts][params[:name]] = {id: 70, phone_number: params[:phone].to_i, email: params[:email], category: params[:category].to_s}
   session[:message] = "New contact added."
 
   redirect "/"
