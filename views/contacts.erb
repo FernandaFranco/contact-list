@@ -7,6 +7,6 @@
     <% @remaining.delete(name[0].upcase)%>
   <% end %>
   <div>
-    <a href="/contacts/<%= @contacts[name][:id]%>"><%= name %></a>
+    <a href="/contacts/<%= @contacts.find { |entry| entry[:name] == name }[:id]%>"><%= name %></a>
   </div>
 <% end %>
