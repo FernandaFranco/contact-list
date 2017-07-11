@@ -8,10 +8,7 @@ configure do
 end
 
 before do
-  session[:contacts] ||= [{id: 1, name: "Lucas", phone_number: 6173866111, email: "lucasaelima@gmail.com", category: :family},
-               {id: 2, name: "Hellen", phone_number: 4231231234, email: "hellenita@gmail.com", category: :friends},
-               {id: 3, name: "Holly", phone_number: 1234567890, email: "hollygraph@gmail.com", category: :friends},
-               {id: 4, name: "Maggie", phone_number: 3211231235, email: "margaritta@gmail.com", category: :work}]
+  session[:contacts] ||= []
 
 end
 
@@ -39,8 +36,17 @@ get "/new_contact" do
   erb :new_contact
 end
 
+def next_id(contacts)
+  if contacts.empty?
+    return 1
+  else
+    contacts.map { |contact| contact[:id] }.max + 1
+  end
+end
+
 post "/new_contact" do
-  session[:contacts] << {id: 70, name: params[:name], phone_number: params[:phone].to_i, email: params[:email], category: params[:category].to_s}
+  contacts = session[:contacts]
+  session[:contacts] << {id: next_id(contacts), name: params[:name], phone_number: params[:phone].to_i, email: params[:email], category: params[:category].to_s}
   session[:message] = "New contact added."
 
   redirect "/"
