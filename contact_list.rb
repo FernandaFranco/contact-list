@@ -46,8 +46,8 @@ end
 
 post "/new_contact" do
   contacts = session[:contacts]
-  session[:contacts] << {id: next_id(contacts), name: params[:name], phone_number: params[:phone].to_i, email: params[:email], category: params[:category].to_s}
+  session[:contacts] << {id: next_id(contacts), name: params[:name], phone_number: params[:phone].to_i, email: params[:email], category: params[:category]}
   session[:message] = "New contact added."
 
-  redirect "/"
+  redirect "/contacts"
 end
