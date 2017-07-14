@@ -1,0 +1,8 @@
+.message {
+  padding: 5px;
+  background-color: yellow;
+}
+
+h1, a, form {
+  display: inline;
+}

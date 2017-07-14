@@ -1,15 +1,15 @@
-<form method="post" action="/new_contact">
+<form method="post" action="/contacts/<%= @contact[:id] %>">
 <div>
   <label>Name:</label>
-  <input type="" name="name">
+  <input value="<%= @contact[:name] %>" name="name">
 </div>
 <div>
   <label>Phone Number:</label>
-  <input type="" name="phone_number">
+  <input value="<%= @contact[:phone_number] %>" name="phone_number">
 </div>
 <div>
   <label>Email Address:</label>
-  <input type="" name="email">
+  <input value="<%= @contact[:email] %>" name="email">
 </div>
 <div>
   <label>Category:</label>
@@ -20,5 +20,5 @@
   </select>
 </div>
 
-<button type="submit">Add Contact</button>
+<button type="submit">Save Changes</button>
 </form>

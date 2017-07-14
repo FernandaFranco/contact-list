@@ -40,14 +40,43 @@ def next_id(contacts)
   if contacts.empty?
     return 1
   else
-    contacts.map { |contact| contact[:id] }.max + 1
+    contacts.map { |contact| contact[:id].to_i }.max + 1
   end
 end
 
 post "/new_contact" do
   contacts = session[:contacts]
-  session[:contacts] << {id: next_id(contacts), name: params[:name], phone_number: params[:phone].to_i, email: params[:email], category: params[:category]}
+  contacts << {id: next_id(contacts), name: params[:name], phone_number: params[:phone_number].to_i, email: params[:email], category: params[:category]}
   session[:message] = "New contact added."
+
+  redirect "/contacts"
+end
+
+get "/contacts/:contact_id/edit" do
+  contacts = session[:contacts]
+  contact_id = params[:contact_id].to_i
+  @contact = contacts.find { |contact| contact[:id] == contact_id}
+
+  erb :edit_contact
+end
+
+post "/contacts/:contact_id" do
+  contacts = session[:contacts]
+  contact_id = params[:contact_id].to_i
+  contacts.delete_if { |contact| contact[:id] == contact_id}
+
+  contacts << {id: contact_id, name: params[:name], phone_number: params[:phone_number].to_i, email: params[:email], category: params[:category]}
+  session[:message] = "Contact updated."
+
+  redirect "/contacts"
+end
+
+post "/contacts/:contact_id/delete" do
+  contacts = session[:contacts]
+  contact_id = params[:contact_id].to_i
+  contacts.delete_if { |contact| contact[:id] == contact_id}
+
+  session[:message] = "Contact deleted."
 
   redirect "/contacts"
 end

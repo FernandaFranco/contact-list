@@ -1,7 +1,11 @@
-<h1><%= @contact[:name] %></h1>
+<div class="headline">
+  <h1><%= @contact[:name] %></h1>
+  <a href="/contacts/<%= @contact[:id] %>/edit">edit</a>
+  <form method="post" action="/contacts/<%= @contact[:id] %>/delete"><button>delete</button></form>
+</div>
 <em><%= @contact[:category].to_s %></em>
 
-<p>Phone: <%= @contact[:phone_number] %></p>
+<p>Phone Number: <%= @contact[:phone_number] %></p>
 <p>E-mail: <%= @contact[:email] %></p>
 
 <a href="/contacts">Return to all contacts</a>
