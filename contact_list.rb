@@ -69,6 +69,11 @@ class DatabasePersistence
     query(sql, name, phone, email, category, id)
   end
 
+  def delete_contact(id)
+    sql = "DELETE FROM contacts WHERE id = $1"
+    query(sql, id)
+  end
+
   private
 
   def tuple_to_list_hash(tuple)
@@ -138,10 +143,8 @@ post "/contacts/:contact_id" do
 end
 
 post "/contacts/:contact_id/delete" do
-  contacts = session[:contacts]
   contact_id = params[:contact_id].to_i
-  contacts.delete_if { |contact| contact[:id] == contact_id}
-
+  @storage.delete_contact(contact_id)
   session[:message] = "Contact deleted."
 
   redirect "/contacts"
