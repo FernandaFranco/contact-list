@@ -1,12 +1,12 @@
 <h1>My Contacts</h1>
 <a href="/new_contact">Add a contact</a>
 
-<% @contact_names.each do |name| %>
-  <% if @remaining.include?(name[0].upcase)  %>
-    <h3><%= name[0].upcase %></h3>
-    <% @remaining.delete(name[0].upcase)%>
+<% @contacts.each do |contact| %>
+  <% if @remaining.include?(contact[:name][0].upcase)  %>
+    <h3><%= contact[:name][0].upcase %></h3>
+    <% @remaining.delete(contact[:name][0].upcase)%>
   <% end %>
   <div>
-    <a href="/contacts/<%= @contacts.find { |entry| entry[:name] == name }[:id]%>"><%= name %></a>
+    <a href="/contacts/<%= contact[:id] %>"><%= contact[:name] %></a>
   </div>
 <% end %>
