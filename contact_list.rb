@@ -40,7 +40,7 @@ class DatabasePersistence
   end
 
   def all_contacts
-    sql = "SELECT * FROM contacts"
+    sql = "SELECT * FROM contacts ORDER BY name ASC"
     result = query(sql)
 
     result.map do |tuple|
