@@ -59,6 +59,16 @@ class DatabasePersistence
     result.first
   end
 
+  def add_contact(name, phone, email, category)
+    sql = "INSERT INTO contacts (name, phone, email, category) VALUES ($1, $2, $3, $4)"
+    query(sql, name, phone, email, category)
+  end
+
+  def edit_contact(id, name, phone, email, category)
+    sql = "UPDATE contacts SET name = $1, phone = $2, email = $3, category = $4 WHERE id = $5"
+    query(sql, name, phone, email, category, id)
+  end
+
   private
 
   def tuple_to_list_hash(tuple)
@@ -99,23 +109,14 @@ get "/new_contact" do
   erb :new_contact
 end
 
-def next_id(contacts)
-  if contacts.empty?
-    return 1
-  else
-    contacts.map { |contact| contact[:id].to_i }.max + 1
-  end
-end
-
 post "/new_contact" do
-  contacts = session[:contacts]
   contact_name = params[:name].strip
   error = error_for_name(contact_name)
   if error
     session[:message] = error
     erb :new_contact
   else
-    contacts << {id: next_id(contacts), name: contact_name, phone_number: params[:phone_number].to_i, email: params[:email], category: params[:category]}
+    @storage.add_contact(contact_name, params[:phone_number].to_i, params[:email], params[:category])
     session[:message] = "New contact added."
     redirect "/contacts"
   end
@@ -123,19 +124,14 @@ post "/new_contact" do
 end
 
 get "/contacts/:contact_id/edit" do
-  contacts = session[:contacts]
   contact_id = params[:contact_id].to_i
-  @contact = contacts.find { |contact| contact[:id] == contact_id}
-
+  @contact = @storage.contact_info(contact_id)
   erb :edit_contact
 end
 
 post "/contacts/:contact_id" do
-  contacts = session[:contacts]
   contact_id = params[:contact_id].to_i
-  contacts.delete_if { |contact| contact[:id] == contact_id}
-
-  contacts << {id: contact_id, name: params[:name], phone_number: params[:phone_number].to_i, email: params[:email], category: params[:category]}
+  @storage.edit_contact(contact_id, params[:name], params[:phone_number].to_i, params[:email], params[:category])
   session[:message] = "Contact updated."
 
   redirect "/contacts"

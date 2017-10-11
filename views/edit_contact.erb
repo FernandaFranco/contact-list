@@ -5,7 +5,7 @@
 </div>
 <div>
   <label>Phone Number:</label>
-  <input value="<%= @contact[:phone_number] %>" name="phone_number">
+  <input value="<%= @contact[:phone] %>" name="phone_number">
 </div>
 <div>
   <label>Email Address:</label>
@@ -13,7 +13,7 @@
 </div>
 <div>
   <label>Category:</label>
-  <select name="category">
+  <select value="<%= @contact[:category] %>" name="category">
     <option value="family">Family </option>
     <option value="friends">Friends</option>
     <option value="work">Work</option>
